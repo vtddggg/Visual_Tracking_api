@@ -41,7 +41,7 @@ class NCCTracker(object):
 
         return Sequence.Rectangle(left + max_loc[0], top + max_loc[1], self.size[0], self.size[1])
 
-handle = Sequence.Sequence(path='/media/maoxiaofeng/project/GameProject', name='boy', region_format='rectangle')
+handle = Sequence.Sequence(path='/media/maoxiaofeng/project/GameProject/vot2016', name='bag', region_format='rectangle')
 selection = handle.region()
 
 imagefile = handle.frame()
