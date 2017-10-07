@@ -81,7 +81,11 @@ class Sequence(object):
             region_format: Region format options
         """
         assert(region_format in ['rectangle', 'polygon'])
-        self.seqdir = os.path.join(path, name)
+
+        if len(name) == 0:
+            self.seqdir = path
+        else:
+            self.seqdir = os.path.join(path, name)
 
         self._images=[]
         for _, _, files in os.walk(self.seqdir):
