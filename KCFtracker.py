@@ -45,55 +45,8 @@ def dense_gauss_kernel(sigma, xf, x, zf=None, z=None):
 
     return k
 
-
-def get_subwindow(im, pos, sz):
-    """
-    Obtain sub-window from image, with replication-padding.
-    Returns sub-window of image IM centered at POS ([y, x] coordinates),
-    with size SZ ([height, width]). If any pixels are outside of the image,
-    they will replicate the values at the borders.
-
-    The subwindow is also normalized to range -0.5 .. 0.5, and the given
-    cosine window COS_WINDOW is applied
-    (though this part could be omitted to make the function more general).
-    """
-
-    if np.isscalar(sz):  # square sub-window
-        sz = [sz, sz]
-
-    ys = np.floor(pos[0]) + np.arange(sz[0], dtype=int) - np.floor(sz[0] / 2)
-    xs = np.floor(pos[1]) + np.arange(sz[1], dtype=int) - np.floor(sz[1] / 2)
-
-    ys = ys.astype(int)
-    xs = xs.astype(int)
-
-    # check for out-of-bounds coordinates and set them to the values at the borders
-    ys[ys < 0] = 0
-    ys[ys >= im.shape[0]] = im.shape[0] - 1
-
-    xs[xs < 0] = 0
-    xs[xs >= im.shape[1]] = im.shape[1] - 1
-
-    out = im[np.ix_(ys, xs)]
-    return out
-
-def fft2(x):
-    """
-    FFT transform of the first 2 dimension
-    :param x: M*N*C the first two dimensions are used for Fast Fourier Transform
-    :return:  M*N*C the FFT2 of the first two dimension
-    """
-    if type(x) == list:
-        x = [np.fft.fft2(f, axes=(0,1)) for f in x]
-        return x
-    else:
-        return np.fft.fft2(x, axes=(0, 1))
-
 class KCFTracker:
-    def __init__(self, feature_type='raw', sub_feature_type='', sub_sub_feature_type='',
-                 debug=False, gt_type='rect', load_model=False, vgglayer='',
-                 model_path='./trained_models/CNN_Model_OBT100_multi_cnn_final.h5',
-                 cnn_maximum=False):
+    def __init__(self):
         pass
 
     def train(self, im, init_rect, seqname):
