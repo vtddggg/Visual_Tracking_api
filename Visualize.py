@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from skimage import io
 from matplotlib.patches import Rectangle, Polygon
 import numpy as np
+from mpl_toolkits.axes_grid1 import ImageGrid
 
 def Visualize_Tracking(Sequence, visualize_type = 'groundtruth'):
 
@@ -50,3 +51,15 @@ def Visualize_Tracking(Sequence, visualize_type = 'groundtruth'):
         plt.draw()
         plt.waitforbuttonpress(0.001)
         Sequence._frame += 1
+
+def imshow_grid(images, shape=[3, 10]):
+    """Plot images in a grid of a given shape."""
+    fig = plt.figure(1)
+    grid = ImageGrid(fig, 111, nrows_ncols=shape, axes_pad=0.05)
+
+    size = shape[0] * shape[1]
+    for i in range(size):
+        grid[i].axis('off')
+        grid[i].imshow(images[i]/np.max(images[i]),cmap=plt.cm.gray)  # The AxesGrid object work as a list of axes.
+
+    plt.show()
