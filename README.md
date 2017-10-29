@@ -5,9 +5,7 @@ This is a simple visual tracking interface coding by Python2.7
 
 ## VOT
 
-Now the interface is compatible with VOT dataset
-
-You can use [vot-toolkit](https://github.com/votchallenge/vot-toolkit) to evaluate the tracking algorithm on VOT datasets.
+Now the interface is compatible with VOT dataset, you can use [vot-toolkit](https://github.com/votchallenge/vot-toolkit) to evaluate the tracking algorithm on VOT datasets.
 
 You can download Visual Object Tracking (VOT) challenge datasets through the following links:
 
