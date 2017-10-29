@@ -42,5 +42,5 @@ sequence = Sequence(path='/YOUR_ROOT_DIR/vot2016', name='THE_NAME_OF_SEQUENCE', 
 
 ### Tutorials
 
-`tutorials` folder contains the implementation and tutorial of various famous tracking algorithms written with `ipython notebook`. Learning these notebooks helps you understand the details of the algorithms.
+`tutorials` folder contains the implementation and tutorial of various famous tracking algorithms written with ipython-notebook. Learning these notebooks helps you understand the details of the algorithms.
 
