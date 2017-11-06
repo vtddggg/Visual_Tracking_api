@@ -2,6 +2,24 @@ import numpy as np
 from scipy import misc
 from skimage import transform
 
+def get_window_size(target_sz, im_sz, padding):
+
+    if (target_sz[0] / target_sz[1] > 2):
+        # For objects with large height, we restrict the search window with padding.height
+        window_sz = np.floor(np.multiply(target_sz, [1 + padding.height, 1 + padding.generic]))
+
+    elif np.prod(target_sz)/np.prod(im_sz) > 0.05:
+        # For objects with large height and width and accounting for at least 10 percent of the whole image,
+        # we only search 2xheight and width
+        window_sz = np.floor(target_sz * (1 + padding.large))
+
+    else:
+        window_sz = np.floor(target_sz * (1 + padding.generic))
+
+    return window_sz
+
+
+
 
 def get_subwindow(im, pos, sz, scale_factor = None, feature='raw'):
     """
@@ -21,7 +39,6 @@ def get_subwindow(im, pos, sz, scale_factor = None, feature='raw'):
     sz_ori = sz
 
     if scale_factor != None:
-        assert (type(scale_factor) == float)
         sz = np.floor(sz*scale_factor)
 
     ys = np.floor(pos[0]) + np.arange(sz[0], dtype=int) - np.floor(sz[0] / 2)
@@ -39,7 +56,7 @@ def get_subwindow(im, pos, sz, scale_factor = None, feature='raw'):
 
     out = im[np.ix_(ys, xs)]
     if scale_factor != None:
-        out = misc.imresize(out, sz_ori.astype(np.uint8))
+        out = misc.imresize(out, sz_ori.astype(int))
 
 
     if feature == 'hog':

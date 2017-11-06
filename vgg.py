@@ -21,9 +21,11 @@ class VGG_19(nn.Module):
 
 
     def forward(self, x):
+        output = []
         for module in self.features._modules.values():
             x = module(x)
 
             if self.features._modules.values().index(module) in self.outputlayer:
-                break
-        return x
+                output.append(x)
+
+        return output

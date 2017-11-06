@@ -12,15 +12,17 @@ This repository contains the following contents：
 `pyhog` folder includes a implementation of HOG feature. We copied this implementation from https://github.com/dimatura/pyhog
 
 python wrapper script file named `XXXtracker.py`，such as `KCFtracker.py`. These trackers can be integrated into the VOT evaluation process. There is a demo file `vot_demo_tracker.py` representing how to write the wrapper script file.
-You can refer to Usage：Evaluate on VOT dataset for getting more information.
+You can refer to < Usage > for getting more information.
 
-Algorithms that have been implemented are as follows:
+## Trackers
 
-KCF: High-Speed Tracking with Kernelized Correlation Filters [[PDF]](http://home.isr.uc.pt/~henriques/publications/henriques_tpami2015.pdf)
+Trackers that have been implemented are as follows:
 
-DSST: Accurate Scale Estimation for Robust Visual Tracking [[PDF]](http://www.cvl.isy.liu.se/en/research/objrec/visualtracking/scalvistrack/ScaleTracking_BMVC14.pdf)
+- `KCFtracker.py` High-Speed Tracking with Kernelized Correlation Filters (KCF) [[PDF]](http://home.isr.uc.pt/~henriques/publications/henriques_tpami2015.pdf)
 
-DeepDCF(correlation filter based trackers using deep feature)
+- `DSSTtracker.py` Accurate Scale Estimation for Robust Visual Tracking (DSST) [[PDF]](http://www.cvl.isy.liu.se/en/research/objrec/visualtracking/scalvistrack/ScaleTracking_BMVC14.pdf)
+
+- `HCFtracker.py` Hierarchical Convolutional Features for Visual Tracking (HCF) [[PDF]](https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Ma_Hierarchical_Convolutional_Features_ICCV_2015_paper.pdf)
 
 ## Environment
 
