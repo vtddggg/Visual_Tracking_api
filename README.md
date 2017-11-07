@@ -52,7 +52,6 @@ Then, if the algorithm requires hog features, you must move the folder `pyhog` t
 
 ```buildoutcfg
 sudo cp -r .../Visual_Tracking_api/pyhog /usr/local/lib/python2.7/site-packages
-
 ```
 
 Or the algorithm requires deep features (we use pretrained vgg19 in general), you need to download model file 'vgg19.pth' by url:
