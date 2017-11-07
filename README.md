@@ -42,24 +42,73 @@ opencv 2.4.11
 
 ## Usage
 
-### Visualize a sequence
+### Prepare
 
-You can run `example.py` to visualize a sequence. Before you run it, note that modify the parameters of `Sequence ()`
+Before using the tracking interface, you must do some preparation.
+
+First of all, install the necessary library (mentioned in < Environment >)
+
+Then, if the algorithm requires hog features, you must move the folder `pyhog` to Python site-packages by:
+
+```buildoutcfg
+sudo cp -r .../Visual_Tracking_api/pyhog /usr/local/lib/python2.7/site-packages
+
+```
+
+Or the algorithm requires deep features (we use pretrained vgg19 in general), you need to download model file 'vgg19.pth' by url:
+
+https://download.pytorch.org/models/vgg19-dcbb9e9d.pth
+
+and place it in project directory.
+
+### Tracking on you own sequence
+
+You can use this tool to track on you own sequence:
+
+Make sure that your video has been decomposed into image sequences and each image is named with a number
+(if the current image corresponds to the ith frame in the video, then the name is i.jpg or 0000i.jpg, adding 0 in front of the i is OK). For example:
+
+![](./image/files.png)
+
+Except for the image sequence, you need to provide `groundtruth.txt` file which represents the boundingbox infromation.
+The boundingbox of the first frame must be give, so there are at least one line in the `groundtruth.txt` file. 
+ For example:
+```
+20.0,30.0,50.0,100.0
+```
+Represents the boundingbox at (20.0, 30.0) position, width and height are respectively 50.0, 100.0.
+Of course, if there are other frames of boundingbox information, it can also be written in `groundtruth.txt`.
+
+We provide tools to run algorithms on custom sequences.
+`example.py` is an demo for understanding how to use. First, you need to configure the sequence by 
 
 ```python
 sequence = Sequence(path='/YOUR_ROOT_DIR/YOUR_DATASET_NAME', name='THE_NAME_OF_SEQUENCE', region_format='rectangle')
 
 ```
 
-For example, visualize a sequence of vot2016:
+For example, configure a sequence of vot2016:
 
 ```python
 sequence = Sequence(path='/media/maoxiaofeng/project/GameProject/dataset/vot2016', name='bag',
 region_format='rectangle')
 
-Visualize_Tracking(sequence)
+```
+
+Then, run tracking algorithms on the configured sequence by
+(If you want to visualize the result, modify `visualize` to True)
+
+```python
+Tracking(sequence,tracker_list=['KCFtracker','DSSTtracker'],visualize = False)
 
 ```
+
+Also you can visulize results directly by ( `visualize_gt` controls whether to visualize the groundtruth. If `tracker_list` is None, this function will only visualize the groundtruth. )
+
+```python
+visulize_result(sequence,tracker_list=['KCFtracker','DSSTtracker'],visualize_gt = True)
+```
+
 
 ### Evaluate on VOT dataset
 

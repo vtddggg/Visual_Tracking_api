@@ -169,6 +169,4 @@ class VOT(object):
                     f.write(encode_region(r))
                     f.write('\n')
 
-    def __del__(self):
-        self.quit()            
 

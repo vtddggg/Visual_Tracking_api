@@ -116,7 +116,6 @@ class DSSTtracker:
             self.currentScaleFactor = self.max_scale_factor
 
         # update
-        print type(self.currentScaleFactor)
         update_patch = utils.get_subwindow(image, self.pos, self.sz, scale_factor=self.currentScaleFactor)
         hog_feature_l = pyhog.features_pedro(update_patch / 255., 1)
         hog_feature_l = np.lib.pad(hog_feature_l, ((1, 1), (1, 1), (0, 0)), 'edge')
@@ -161,5 +160,6 @@ while True:
     image = cv2.imread(imagefile)
     region = tracker.track(image)
     handle.report(region)
+handle.quit()
 
 

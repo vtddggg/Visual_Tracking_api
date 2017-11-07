@@ -75,4 +75,5 @@ while True:
     image = cv2.imread(imagefile)/255.
     region = tracker.track(image)
     handle.report(region)
+handle.quit()
 

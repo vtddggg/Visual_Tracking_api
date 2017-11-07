@@ -15,14 +15,14 @@ class padding:
         self.large = 1
         self.height = 0.4
 
-outputlayer = [35,26,17]
+outputlayer = [17,26,35]
 numlayers = len(outputlayer)
-layerweights = [1,0.5,0.25]
+layerweights = [0.25,0.5,1]
 assert (numlayers == len(layerweights))
 
 # network init
 
-model = vgg.VGG_19(outputlayer=[35,26,17])
+model = vgg.VGG_19(outputlayer=outputlayer)
 
 # load partial weights
 model_dict = model.state_dict()

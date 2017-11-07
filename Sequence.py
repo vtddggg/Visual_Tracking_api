@@ -75,6 +75,7 @@ def convert_region(region, to):
 class Sequence(object):
     """ Base class for Python VOT integration """
     def __init__(self, path, name, region_format = 'rectangle'):
+        self.name = name
         """ Constructor
         
         Args: 
@@ -138,20 +139,7 @@ class Sequence(object):
             return None
         return os.path.join(self.seqdir, self._images[self._frame])
 
-    def quit(self):
 
-        '''
-
-        if hasattr(self, '_result'):
-            with open('output.txt', 'w') as f:
-                for r in self._result:
-                    f.write(encode_region(r))
-                    f.write('\n')
-
-        '''
-
-    def __del__(self):
-        self.quit()
 
 
 
