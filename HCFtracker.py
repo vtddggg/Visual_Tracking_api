@@ -223,4 +223,5 @@ while True:
     image = cv2.imread(imagefile)
     region = tracker.track(image)
     handle.report(region)
+handle.quit()
 

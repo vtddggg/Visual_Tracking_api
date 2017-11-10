@@ -74,8 +74,11 @@ def visulize_result(Sequence, tracker_list = None, visualize_gt = True):
                         width=tr_data.width,
                         height=tr_data.height,
                         facecolor='none',
-                        edgecolor=colors[600/(tracker_list.index(str)+1)],
+                        edgecolor=colors[tracker_list.index(str)*number_of_lines / len(tracker_list)],
                     ))
+                    tracking_figure_axes.text(100, 20*(tracker_list.index(str)+1), str,
+                            verticalalignment='bottom', horizontalalignment='right',
+                            color=colors[tracker_list.index(str)*number_of_lines / len(tracker_list)], fontsize=15)
 
                 else:
                     a = []
@@ -84,7 +87,7 @@ def visulize_result(Sequence, tracker_list = None, visualize_gt = True):
                     tr_rect = Polygon(
                         xy=np.array(a),
                         facecolor='none',
-                        edgecolor=colors[600/(tracker_list.index(str)+1)],
+                        edgecolor=colors[tracker_list.index(str)*number_of_lines / len(tracker_list)],
                     )
                     tracking_figure_axes = plt.axes()
                     tracking_figure_axes.add_patch(tr_rect)
@@ -119,6 +122,77 @@ def visulize_result(Sequence, tracker_list = None, visualize_gt = True):
         plt.draw()
         plt.waitforbuttonpress()
         Sequence._frame += 1
+
+def precision_plot(Sequence, tracker_list):
+    start = 0.0
+    stop = 1.0
+    number_of_lines = 1000
+    cm_subsection = linspace(start, stop, number_of_lines)
+
+    colors = [cm.jet(x) for x in cm_subsection]
+    fig = plt.Figure()
+    plt.xlabel('Threshold')
+    plt.ylabel('Precision')
+    plt.ylim(0, 1)
+    max_threshold = 50
+    gt = [[data.y + data.height / 2, data.x + data.width / 2] for data in Sequence.groundtruth]
+    gt = np.array(gt)
+    for str in tracker_list:
+        precisions = np.zeros(shape = [max_threshold])
+        result = np.loadtxt('results/' + str + '/' + Sequence.name + '/output.txt',delimiter=',')
+        positions = result[:,[1,0]]+result[:,[3,2]]/2
+        distance = np.sqrt(np.sum(np.power(positions-gt,2),1))
+        for p in range(max_threshold):
+            precisions[p] = float(np.count_nonzero(distance<(p+1)))/distance.shape[0]
+        plt.plot(precisions,color =colors[tracker_list.index(str)*number_of_lines / len(tracker_list)], label =str)
+    plt.legend()
+    plt.show()
+
+def overlap_plot(Sequence, tracker_list):
+    start = 0.0
+    stop = 1.0
+    number_of_lines = 1000
+    cm_subsection = linspace(start, stop, number_of_lines)
+
+    colors = [cm.jet(x) for x in cm_subsection]
+    fig = plt.Figure()
+    plt.xlabel('Threshold')
+    plt.ylabel('Overlap')
+    plt.ylim(0, 1)
+    plt.xlim(0, 1)
+    inter_p = 100
+    gt = [[data.x, data.y, data.width, data.height] for data in Sequence.groundtruth]
+    gt = np.array(gt)
+    for str in tracker_list:
+        Thresholds = np.arange(0,1,1.0/inter_p)+1.0/inter_p
+        overlap_precision = np.zeros(shape=[inter_p])
+
+        result = np.loadtxt('results/' + str + '/' + Sequence.name + '/output.txt', delimiter=',')
+        endX = np.max(np.vstack((result[:,0]+result[:,2],gt[:,0]+gt[:,2])),axis=0)
+        startX = np.min(np.vstack((result[:,0], gt[:,0])),axis=0)
+        width = result[:,2]+gt[:,2]-(endX-startX)
+        width[width < 0] = 0
+
+        endY = np.max(np.vstack((result[:, 1] + result[:, 3], gt[:, 1] + gt[:, 3])), axis=0)
+        startY = np.min(np.vstack((result[:, 1], gt[:, 1])), axis=0)
+        height = result[:, 3] + gt[:, 3] - (endY - startY)
+        height[height < 0] = 0
+
+        Area = np.multiply(width,height)
+        Area1 = np.multiply(result[:,2],result[:,3])
+        Area2 = np.multiply(gt[:,2],gt[:,3])
+        overlap_ratio = np.divide(Area,Area1+Area2-Area)
+
+        for p in range(inter_p):
+            overlap_precision[p] = float(np.count_nonzero(overlap_ratio > Thresholds[p])) / overlap_ratio.shape[0]
+        plt.plot(overlap_precision, Thresholds, color=colors[tracker_list.index(str)*number_of_lines / len(tracker_list)], label=str)
+    plt.legend()
+    plt.show()
+
+
+
+
+
 
 
 def imshow_grid(images, shape=[3, 10]):
